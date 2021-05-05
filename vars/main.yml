@@ -1,2 +1,7 @@
 ---
-# vars file for ansible-role-protonbridge
+proton_dep:
+  - pass
+
+pkgbuild_url: https://protonmail.com/download/bridge/PKGBUILD
+
+cmd_which_proton: "which protonmail-bridge 2>/dev/null || true"

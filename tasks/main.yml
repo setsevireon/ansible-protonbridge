@@ -1,2 +1,2 @@
 ---
-# tasks file for ansible-role-protonbridge
+- import_tasks: dependencies.yml

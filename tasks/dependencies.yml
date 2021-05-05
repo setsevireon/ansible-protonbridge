@@ -1,0 +1,30 @@
+---
+- name: Dependencies
+  become: yes
+  ansible.builtin.apt:
+    name: "{{ proton_dep }}"
+    update_cache: yes
+
+- name: Is protonmail-bridge already installed?
+  ansible.builtin.shell:
+    cmd: "{{ cmd_which_proton }}"
+  register: which_proton
+  changed_when: which_proton.stdout == ""
+
+- name: Download PKGBUILD
+  ansible.builtin.get_url:
+    url: "{{ pkgbuild_url }}"
+    dest: /tmp
+  when: which_proton.stdout == ""
+
+- name: Download protonbridge package
+  ansible.builtin.get_url:
+    url: "{{ lookup('file', '/tmp/PKGBUILD') | regex_search('(http.*\\.deb)') }}"
+    dest: /tmp
+  when: which_proton.stdout == ""
+
+- name: Install protonbridge package
+  become: yes
+  ansible.builtin.apt:
+    deb: "/tmp/{{ lookup('file', '/tmp/PKGBUILD') | regex_search('(protonmail-bridge.*\\.deb)') }}"
+  when: which_proton.stdout == ""
