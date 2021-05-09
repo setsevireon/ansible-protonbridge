@@ -1,0 +1,25 @@
+---
+- name: Check pass
+  become: yes
+  become_user: "{{ proton_local_user }}"
+  ansible.builtin.shell:
+    cmd: "{{ cmd_pass_list }}"
+  register: pass_list
+  changed_when: '"password store is empty" in pass_list.stderr'
+
+- name: List GPG key
+  become: yes
+  become_user: "{{ proton_local_user }}"
+  ansible.builtin.shell:
+    cmd: "{{ cmd_gpg_list }}"
+  register: gpg_list
+  changed_when: '"ProtonMail Bridge" not in gpg_list.stdout'
+  when: '"Password Store" not in pass_list.stdout'
+
+- name: Initialize pass
+  become: yes
+  become_user: "{{ proton_local_user }}"
+  ansible.builtin.shell:
+    cmd: "pass init {{ gpg_list.stdout | regex_search('([0-9A-Z]{40})') }}"
+  register: init_pass
+  when: '"Password Store" not in pass_list.stdout'
