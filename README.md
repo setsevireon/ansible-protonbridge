@@ -35,7 +35,7 @@ Example Playbook
     protonmail_username: "alibaba"
     protonmail_password: "opensesame"
   roles:
-    - crlsmrx.ansible-role-protonmail-bridge
+    - crlsmrx.protonmailbridge
 ```
 
 License
