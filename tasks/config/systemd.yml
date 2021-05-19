@@ -1,0 +1,15 @@
+---
+- name: Copy protonmail-bridge.service
+  become: yes
+  ansible.builtin.template:
+    src: templates/protonmail-bridge.service.j2
+    dest: /etc/systemd/system/protonmail-bridge.service
+    mode: 0700
+
+- name: Start service
+  become: yes
+  ansible.builtin.systemd:
+    name: protonmail-bridge.service
+    state: started
+    enabled: yes
+    daemon_reload: yes

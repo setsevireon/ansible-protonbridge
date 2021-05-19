@@ -1,0 +1,12 @@
+[Unit]
+Description=ProtonMail Bridge
+After=network.target
+
+[Service]
+Type=simple
+User={{ pb_owner }}
+ExecStart=/usr/bin/protonmail-bridge --no-window --noninteractive
+TimeoutSec=5
+
+[Install]
+WantedBy=multi-user.target
