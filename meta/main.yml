@@ -1,4 +1,5 @@
 galaxy_info:
+  role_name: protonmailbridge
   author: Carlos Marx
   description: Deploy and configure protonmail-bridge
   license: MIT
@@ -6,10 +7,12 @@ galaxy_info:
 
   platforms:
     - name: Debian
-      versions: bullseye
+      versions:
+        - bullseye
 
   galaxy_tags:
     - protonmail
+    - protonmail-bridge
     - email
 
 dependencies: []
