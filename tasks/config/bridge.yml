@@ -1,0 +1,24 @@
+---
+- name: Kill protonmail-bridge
+  become: yes
+  ansible.builtin.shell:
+    cmd: "{{ pb_bridge.kill }} ; true"
+  changed_when: false
+
+- name: Get bridge info
+  become: yes
+  become_user: "{{ pb_owner }}"
+  ansible.builtin.shell:
+    cmd: "{{ pb_bridge.cli }}"
+    stdin: "{{ pb_bridge.info }}"
+  register: bridge_info
+  changed_when: false
+
+- name: Add user to the bridge
+  become: yes
+  become_user: "{{ pb_owner }}"
+  ansible.builtin.shell:
+    cmd: "{{ pb_bridge.cli }}"
+    stdin: "{{ pb_bridge.adduser }}"
+  register: bridge_adduser
+  when: "pb_bridge.nouser in bridge_info.stdout"

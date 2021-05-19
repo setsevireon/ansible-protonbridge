@@ -1,30 +1,29 @@
 ---
-- name: Dependencies
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: Install Dependencies
   become: yes
   ansible.builtin.apt:
-    name: "{{ proton_dep }}"
+    name: "{{ pb_dep }}"
     update_cache: yes
 
-- name: Is protonmail-bridge already installed?
-  ansible.builtin.shell:
-    cmd: "{{ cmd_which_proton }}"
-  register: which_proton
-  changed_when: which_proton.stdout == ""
-
 - name: Download PKGBUILD
+  delegate_to: localhost
   ansible.builtin.get_url:
-    url: "{{ pkgbuild_url }}"
-    dest: /tmp
-  when: which_proton.stdout == ""
+    url: "{{ pb_pkgbuild.url }}"
+    dest: "{{ pb_pkgbuild.dest }}"
+  when: "'protonmail-bridge' not in ansible_facts.packages"
 
-- name: Download protonbridge package
+- name: Download protonmail-bridge package
   ansible.builtin.get_url:
-    url: "{{ lookup('file', '/tmp/PKGBUILD') | regex_search('(http.*\\.deb)') }}"
-    dest: /tmp
-  when: which_proton.stdout == ""
+    url: "{{ lookup('file', pb_pkgbuild.dest) | regex_search('(http.*\\.deb)') }}"
+    dest: "{{ remote_tmp_dir }}/protonmail-bridge.deb"
+  when: "'protonmail-bridge' not in ansible_facts.packages"
 
-- name: Install protonbridge package
+- name: Install protonmail-bridge package
   become: yes
   ansible.builtin.apt:
-    deb: "/tmp/{{ lookup('file', '/tmp/PKGBUILD') | regex_search('(protonmail-bridge.*\\.deb)') }}"
-  when: which_proton.stdout == ""
+    deb: "{{ remote_tmp_dir }}/protonmail-bridge.deb"
+  when: "'protonmail-bridge' not in ansible_facts.packages"
