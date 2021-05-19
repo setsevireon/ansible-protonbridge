@@ -4,7 +4,7 @@ ProtonMail Bridge
 This role configures ProtonMail Bridge to run as a SystemD service,
 using pass and GnuPG to store keys.
 
-*WARNING*: There is a high security risk in using the approach in this role.
+**WARNING**: There is a high security risk in using the approach in this role.
 First, you will need to provide your password as a role variable. Second, to
 run protonmail-bridge non-interactive, it is needed to generate a passwordless
 GPG key. I am open to suggestions on safer strategies.
