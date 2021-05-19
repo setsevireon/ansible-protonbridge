@@ -1,7 +1,7 @@
 galaxy_info:
   author: Carlos Marx
   description: Deploy and configure protonmail-bridge
-  license: CC-BY-4.0
+  license: MIT
   min_ansible_version: 2.9
 
   platforms:
