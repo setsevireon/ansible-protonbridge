@@ -1,0 +1,6 @@
+---
+- import_tasks: config/user.yml
+- import_tasks: config/gpg.yml
+- import_tasks: config/pass.yml
+- import_tasks: config/bridge.yml
+- import_tasks: config/systemd.yml

@@ -1,7 +1,32 @@
 ---
-proton_dep:
+local_tmp_dir: "{{ ansible_env.XDG_RUNTIME_DIR | default('/tmp') }}"
+remote_tmp_dir: "{{ ansible_env.XDG_RUNTIME_DIR | default('/tmp') }}"
+
+pb_dep:
   - pass
+  - gnupg
 
-pkgbuild_url: https://protonmail.com/download/bridge/PKGBUILD
+pb_owner: protonmail
+pb_home: /var/lib/protonmail-bridge
 
-cmd_which_proton: "which protonmail-bridge 2>/dev/null || true"
+pb_gpg:
+  key_name: ProtonMail Bridge
+  key_list: gpg --list-secret-keys || true
+  key_gen: gpg --batch --generate-key
+
+pb_pass:
+  list: pass ls || true
+  init: pass init
+  empty: password store is empty
+  present: Password Store
+
+pb_bridge:
+  cli: protonmail-bridge --cli --no-window
+  kill: killall proton-bridge
+  info: "info\nexit"
+  adduser: "login\n{{ protonmail_username }}\n{{ protonmail_password }}\nexit"
+  nouser: No active accounts
+
+pb_pkgbuild:
+  url: https://protonmail.com/download/bridge/PKGBUILD
+  dest: "{{ local_tmp_dir }}/protonmail-bridge.PKGBUILD"
