@@ -1,0 +1,24 @@
+---
+- name: List pass entries
+  become: yes
+  become_user: "{{ pb_owner }}"
+  ansible.builtin.shell:
+    cmd: "{{ pb_pass.list }}"
+  register: pass_list
+  changed_when: "pb_pass.empty in pass_list.stderr"
+
+- name: List GPG keys
+  become: yes
+  become_user: "{{ pb_owner }}"
+  ansible.builtin.shell:
+    cmd: "{{ pb_gpg.key_list }}"
+  register: gpg_key_list
+  changed_when: false
+  when: "pb_pass.present not in pass_list.stdout"
+
+- name: Initialize pass
+  become: yes
+  become_user: "{{ pb_owner }}"
+  ansible.builtin.shell:
+    cmd: "{{ pb_pass.init }} {{ gpg_key_list.stdout | regex_search('([0-9A-Z]{40})') }}"
+  when: "pb_pass.present not in pass_list.stdout"

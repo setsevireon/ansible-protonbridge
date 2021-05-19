@@ -2,6 +2,7 @@
 - name: Add local user
   become: yes
   ansible.builtin.user:
-    name: "{{ proton_local_user }}"
-    home: "{{ proton_local_user_home }}"
+    name: "{{ pb_owner }}"
+    home: "{{ pb_home }}"
+    system: yes
     password_lock: yes
