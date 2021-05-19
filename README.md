@@ -29,13 +29,14 @@ For internal variables see `vars/main.yml`.
 Example Playbook
 ----------------
 
-
-	- hosts: servers
-	  vars:
-	    protonmail_username: "alibaba"
-	    protonmail_password: "opensesame"
-	  roles:
-            - crlsmrx.ansible-role-protonmail-bridge
+```
+- hosts: servers
+  vars:
+    protonmail_username: "alibaba"
+    protonmail_password: "opensesame"
+  roles:
+    - crlsmrx.ansible-role-protonmail-bridge
+```
 
 License
 -------
