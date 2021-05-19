@@ -1,0 +1,25 @@
+---
+- name: Check if GPG key exists
+  become: yes
+  become_user: "{{ pb_owner }}"
+  ansible.builtin.shell:
+    cmd: "{{ pb_gpg.key_list }}"
+  register: gpg_key_list
+  changed_when: false
+
+- name: Copy GPG key config
+  become: yes
+  become_user: "{{ pb_owner }}"
+  ansible.builtin.template:
+    src: templates/gpg_config.j2
+    dest: "{{ pb_home }}/gpg_config"
+    owner: "{{ pb_owner }}"
+    mode: 0600
+  when: "pb_gpg.key_name not in gpg_key_list.stdout"
+
+- name: Create GPG key
+  become: yes
+  become_user: "{{ pb_owner }}"
+  ansible.builtin.shell:
+    cmd: "{{ pb_gpg.key_gen }} {{ pb_home }}/gpg_config"
+  when: "pb_gpg.key_name not in gpg_key_list.stdout"
