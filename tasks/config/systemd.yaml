@@ -2,7 +2,7 @@
 - name: Copy protonmail-bridge.service
   become: yes
   ansible.builtin.template:
-    src: templates/protonmail-bridge.service.j2
+    src: templates/protonmail-bridge.service
     dest: /etc/systemd/system/protonmail-bridge.service
     mode: 0700
 

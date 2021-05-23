@@ -11,8 +11,8 @@
   become: yes
   become_user: "{{ pb_owner }}"
   ansible.builtin.template:
-    src: templates/gpg_config.j2
-    dest: "{{ pb_home }}/gpg_config"
+    src: templates/gpg_batch
+    dest: "{{ pb_home }}/gpg_batch"
     owner: "{{ pb_owner }}"
     mode: 0600
   when: "pb_gpg.key_name not in gpg_key_list.stdout"
