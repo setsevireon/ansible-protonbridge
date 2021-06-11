@@ -4,5 +4,5 @@
   ansible.builtin.systemd:
     name: protonmail-bridge.service
     enabled: yes
-    restarted: yes
+    state: restarted
     daemon_reload: yes
